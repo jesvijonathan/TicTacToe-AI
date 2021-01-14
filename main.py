@@ -105,6 +105,140 @@ f = 140
 gameOn = True
 
 
+def checker_hover():
+    global arr
+
+    t = None
+
+    if 50 <= mouse[0] <= 50+100 and 122 <= mouse[1] <= 122 + 70:
+        pass
+        t = 1
+
+    if arr[0] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [50, 122, 100, 70])
+
+    if 151 <= mouse[0] <= 151+100 and 122 <= mouse[1] <= 122 + 70:
+        pass
+        t = 2
+
+    if arr[1] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [151, 122, 100, 70])
+
+    if 252 <= mouse[0] <= 252+100 and 122 <= mouse[1] <= 122 + 70:
+        pass
+        t = 3
+
+    if arr[2] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [252, 122, 100, 70])
+
+# Svssdkhbsdkjcdslvjafglarglagflargaerliy
+
+    if 50 <= mouse[0] <= 50+100 and 194 <= mouse[1] <= 194 + 77:
+        pass
+        t = 4
+
+    if arr[3] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [50, 194, 100, 77])
+
+    if 151 <= mouse[0] <= 151+100 and 194 <= mouse[1] <= 194 + 77:
+        pass
+        t = 5
+
+    if arr[4] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [151, 194, 100, 77])
+
+    if 252 <= mouse[0] <= 252+100 and 194 <= mouse[1] <= 194 + 77:
+        pass
+        t = 6
+
+    if arr[5] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [252, 194, 100, 77])
+
+    # Svssdkhbsdkjcdslvjafglarglagflargaerliy
+
+    if 50 <= mouse[0] <= 50+100 and 274 <= mouse[1] <= 274 + 77:
+        pass
+        t = 7
+
+    if arr[6] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [50, 274, 100, 77])
+
+    if 151 <= mouse[0] <= 151+100 and 274 <= mouse[1] <= 274 + 77:
+        pass
+        t = 8
+
+    if arr[7] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [151, 274, 100, 77])
+
+    if 252 <= mouse[0] <= 252+100 and 274 <= mouse[1] <= 274 + 77:
+        pass
+        t = 9
+
+    if arr[8] != None:
+        pygame.draw.rect(display_surface, color_dark,
+                         [252, 274, 100, 77])
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if t == None:
+            pass
+        else:
+            game_logic(tile=t)
+
+
+turn = 0
+score1 = 0
+arr = [None, None, None,
+       None, None, None,
+       None, None, None]
+
+
+def check_if_won():
+    global score1
+    global turn
+    global arr
+
+    
+
+
+def game_logic(tile):
+    global score1
+    global turn
+    global arr
+    print(arr)
+
+    b = None
+
+    if turn == 8:
+        pass
+
+    if turn % 2 == 0:
+        b = 0
+    else:
+        b = 1
+
+    if arr[tile-1] == None:
+        arr[tile-1] = b
+        turn = turn+1
+        if turn == 8:
+            pass
+        else:
+            turn = turn+1
+    else:
+        pass
+
+    score1 = turn
+    print(tile, turn)
+    check_if_won()
+
+
 while gameOn:
 
     text1 = font.render("Score1 -", True, blue, white)
@@ -112,7 +246,7 @@ while gameOn:
     textRect1.center = (110, 70)
     display_surface.blit(text1, textRect1)
 
-    text = font.render(str("01"), True, blue, white)
+    text = font.render(str(score1), True, blue, white)
     textRect = text.get_rect()
     textRect.center = (155, 70)
     display_surface.blit(text, textRect)
@@ -161,6 +295,12 @@ while gameOn:
 
             if 170 <= mouse[0] <= 170+65 and 365 <= mouse[1] <= 365 + 24:
                 f = 600
+                turn = 0
+                score1 = 0
+                arr = [None, None, None,
+                       None, None, None,
+                       None, None, None]
+                t = 0
 
             if 270 <= mouse[0] <= 270+65 and 365 <= mouse[1] <= 365 + 24:
                 pygame.quit()
@@ -188,6 +328,8 @@ while gameOn:
     else:
         pygame.draw.rect(display_surface, color_dark,
                          [270, 365, 65, 24])
+
+    checker_hover()
 
     bt = smallfont.render('Back', True, white)
     bt1 = smallfont.render('Reset', True, white)
