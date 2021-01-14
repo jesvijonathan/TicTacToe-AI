@@ -203,6 +203,7 @@ arr = [None, None, None,
 def check_if_won():
     global score1
     global turn
+    p=0
     global arr
 
     
