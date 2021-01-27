@@ -1,5 +1,5 @@
 import pygame
-import time
+import time as clock
 
 from pygame.locals import *
 
@@ -113,34 +113,151 @@ score2 = score1 = 0
 arr = [None, None, None,
        None, None, None,
        None, None, None]
-player1 = "Player 1"
+player1 = "Player1"
 wplayer = ""
-player2 = "Player 2"
-ti = None
+player2 = "Player2"
 copmuter = 0
 start_on = gameOn = True
 sound = True
 dif = 0
-ti = 40
+ti = 20
 ttt = 0
+name = ""
 
 pygame.mixer.init()
 pygame.mixer.music.load("Surf_David_Renda.mp3")
 pygame.mixer.music.play(-1, 0.0)
 
 
+def getno():
+    global player1
+    global player2
+    global copmuter
+
+    b = [100, 117, 200, 20]
+    bb = (200, 127)
+
+    if player1 == "" or player1 == " ":
+        player1 = "Player 1"
+
+    name = player1
+    pygame.draw.rect(display_surface, white, b)
+    text1 = font1.render(name + " ", True, black, white)
+    textRect1 = text1.get_rect()
+    textRect1.center = bb
+    display_surface.blit(text1, textRect1)
+    pygame.display.update()
+
+    b = [100, 200, 200, 20]
+    bb = (200, 210)
+
+    name = "Player 2"
+
+    if player2 == "" or player2 == " ":
+        if copmuter == 0:
+            player2 = "Player 2"
+        else:
+            name = "Computer"
+    else:
+        if copmuter == 0:
+            name = player2
+        else:
+            name = "Computer"
+
+    pygame.draw.rect(display_surface, white, b)
+    text1 = font1.render(name + " ", True, black, white)
+    textRect1 = text1.get_rect()
+    textRect1.center = bb
+    display_surface.blit(text1, textRect1)
+    pygame.display.update()
+
+    return
+
+
+def getn(p1):
+    name = ""
+    global copmuter
+    f = True
+    temp = ""
+    namet = ""
+    b = bb = None
+
+    if p1 == 1:
+        namet = "Player 1"
+        b = [100, 117, 200, 20]
+        bb = (200, 127)
+    else:
+        if copmuter == 1:
+            namet = "Computer"
+        else:
+            namet = "Player 2"
+        b = [100, 200, 200, 20]
+        bb = (200, 210)
+
+    while f:
+        pygame.draw.rect(display_surface, color_light, b)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                print(pygame.key.name(event.key))
+
+                if pygame.key.name(event.key) == "backspace":
+                    print("get out")
+                    name = name[:-1]
+                elif pygame.key.name(event.key) == "return" or pygame.key.name(event.key) == "escape":
+                    f = False
+                    if name == "" or name == " ":
+                        name = namet
+                    pygame.draw.rect(display_surface, white, b)
+                    text1 = font1.render(name + " ", True, black, white)
+                    textRect1 = text1.get_rect()
+                    textRect1.center = bb
+                    display_surface.blit(text1, textRect1)
+                    pygame.display.update()
+                    return name
+                else:
+                    name = name + str(event.unicode)
+                print(event.unicode)
+                print(name)
+            mouse = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if 100 <= mouse[0] <= 120+200 and 120 <= mouse[1] <= 120 + 28:
+                    pass
+                else:
+                    f = False
+                    if name == "" or name == " ":
+                        name = namet
+                    pygame.draw.rect(display_surface, white, b)
+                    text1 = font1.render(name + " ", True, black, white)
+                    textRect1 = text1.get_rect()
+                    textRect1.center = bb
+                    display_surface.blit(text1, textRect1)
+                    pygame.display.update()
+                    return name
+
+        text1 = font1.render(name + "|", True, black, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = bb
+        display_surface.blit(text1, textRect1)
+        pygame.display.update()
+
+
 def room():
+    start_onn = True
     global start_on
     global player2
+    global player1
     global ti
     global copmuter
     global dif
-    global ti
+    global t
+    global time
+    global time1
+    global time2
     global ttt
 
     display_surface.fill(white)
 
-    while start_on:
+    while start_onn:
 
         pygame.draw.rect(display_surface, color_dark,
                          [0, 33, 400, 28])
@@ -154,8 +271,10 @@ def room():
         textRect1.center = (140, 97)
         display_surface.blit(text1, textRect1)
 
-        pygame.draw.rect(display_surface, color_light,
-                         [100, 120, 200, 28])
+        # pygame.draw.rect(display_surface, color_light,
+        #  [100, 120, 200, 28])
+        pygame.draw.rect(display_surface, color_dark,
+                         [100, 137, 200, 3])
 
         text1 = font1.render("Player 2 :", True, black, white)
         textRect1 = text1.get_rect()
@@ -171,13 +290,17 @@ def room():
             user = "User"
 
         pygame.draw.rect(display_surface, color_dark, [195, 165, 96, 24])
+
+        pygame.draw.rect(display_surface, color_dark,
+                         [100, 220, 200, 3])
+
         text1 = font1.render(user, True, white, color_dark)
         textRect1 = text1.get_rect()
         textRect1.center = (243, 177)
         display_surface.blit(text1, textRect1)
 
-        pygame.draw.rect(display_surface, color_light,
-                         [100, 200, 200, 28])
+        # pygame.draw.rect(display_surface, color_light,
+        #               [100, 200, 200, 28])
 
         text1 = font1.render("Difficulty", True, black, white)
         textRect1 = text1.get_rect()
@@ -236,9 +359,9 @@ def room():
         else:
             tt = "Counter"
 
-        pygame.draw.rect(display_surface, color_dark,
+        pygame.draw.rect(display_surface, white,
                          [230, 237, 100, 26])
-        text1 = font1.render(tt, True, white, color_dark)
+        text1 = font1.render(tt, True, black, white)
         textRect1 = text1.get_rect()
         textRect1.center = (280, 250)
         display_surface.blit(text1, textRect1)
@@ -250,6 +373,7 @@ def room():
 
         pygame.draw.rect(display_surface, color_dark,
                          [220, 280, 20, 20])
+
         pygame.draw.rect(display_surface, color_dark,
                          [324, 280, 20, 20])
 
@@ -296,17 +420,27 @@ def room():
                 elif 156 <= mouse[0] <= 156+87 and 310 <= mouse[1] <= 310 + 35:
                     pygame.quit()
 
-                elif 40 <= mouse[0] <= 40+14 and 370 <= mouse[1] <= 370 + 14:
-                    pass
-
+                elif 100 <= mouse[0] <= 100+200 and 120 <= mouse[1] <= 120 + 28:
+                    print("p 1")
+                    player1 = getn(1)
+                elif 100 <= mouse[0] <= 100+200 and 200 <= mouse[1] <= 200 + 28:
+                    print("p 2")
+                    player2 = getn(2)
+                elif 294 <= mouse[0] <= 294+64 and 340 <= mouse[1] <= 340 + 30:
+                    start_on = False
+                    reset_ne()
+                    time1 = time2 = time = ti*100
+                    print(time)
+                    outline()
+                    return
+                elif 45 <= mouse[0] <= 45+64 and 340 <= mouse[1] <= 340 + 30:
+                    start_on = True
+                    return 3
+        getno()
         pygame.display.update()
 
 
-def start_screen():
-
-    global start_on
-    global sound
-
+def dr():
     display_surface.fill(white)
 
     pygame.draw.rect(display_surface, black,
@@ -328,6 +462,19 @@ def start_screen():
                      [40, 370, 14, 14])
     pygame.draw.rect(display_surface, color_dark,
                      [44, 374, 6, 6])
+
+
+def start_screen():
+
+    global start_on
+    global sound
+    global time
+    global time1
+    global time2
+    global ti
+    global ttt
+
+    dr()
 
     while start_on:
 
@@ -376,12 +523,18 @@ def start_screen():
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 if 156 <= mouse[0] <= 156+87 and 160 <= mouse[1] <= 160 + 35:
-                    # start_on = False
-                    room()
+                    #start_on = True
+                    if room() == 3:
+                        dr()
+                    else:
+                        return
 
                 elif 156 <= mouse[0] <= 156+87 and 210 <= mouse[1] <= 210 + 35:
                     start_on = False
                     reset_ne()
+                    time1 = time2 = time = 20*100
+                    ti = 20
+                    ttt = 0
                     outline()
 
                 elif 156 <= mouse[0] <= 156+87 and 260 <= mouse[1] <= 260 + 35:
@@ -474,6 +627,9 @@ def checker_hover():
         game_logic(tile=t)
 
 
+et = 0
+
+
 def banner():
     pygame.draw.rect(display_surface, color_light,
                      [103, 170, 200, 100])
@@ -490,7 +646,26 @@ def banner():
 
     pygame.display.flip()
     pygame.display.update()
-    time.sleep(2)
+    clock.sleep(2)
+
+
+def bannermain(t1="", t2="", t3=2):
+    pygame.draw.rect(display_surface, color_light,
+                     [103, 170, 200, 100])
+
+    text1 = font.render(t1, True, blue, white)
+    textRect1 = text1.get_rect()
+    textRect1.center = (200, 200)
+    display_surface.blit(text1, textRect1)
+
+    text1 = font.render(t2, True, blue, color_light)
+    textRect1 = text1.get_rect()
+    textRect1.center = (200, 240)
+    display_surface.blit(text1, textRect1)
+
+    pygame.display.flip()
+    pygame.display.update()
+    clock.sleep(t3)
 
 
 def banner_draw():
@@ -503,23 +678,49 @@ def banner_draw():
 
     pygame.display.flip()
     pygame.display.update()
-    time.sleep(2)
+    clock.sleep(2)
 
 
 def reset_ne():
 
     global f
-    global t
     global turn
     global arr
-    f = 0
-    t = 0
+    global ti
+    global time
+    global time1
+    global time2
+    if ttt != 0:
+        time1 = time2 = time = ti*100
     turn = 0
     arr = [None, None, None,
            None, None, None,
            None, None, None]
     outline()
+    score1 = score2 = 0
     print("reseted")
+
+
+def sreset():
+    global time
+    global time1
+    global time2
+    global ttt
+    global roundd
+    global score1
+    global score2
+    turn = 0
+    if ttt != 1:
+        score1 = score2 = 0
+        roundd = 0
+    else:
+        pass
+
+    arr = [None, None, None,
+           None, None, None,
+           None, None, None]
+    t = 0
+    outline()
 
 
 def check_if_won():
@@ -562,6 +763,8 @@ def check_if_won():
             wplayer = player2
         banner()
         reset_ne()
+        global roundd
+        roundd = roundd+1
         return 1
 
 
@@ -569,6 +772,7 @@ def game_logic(tile):
     global turn
     global arr
     print(arr)
+    global roundd
 
     b = None
 
@@ -583,39 +787,114 @@ def game_logic(tile):
     if arr[tile-1] == None:
         arr[tile-1] = b
 
+        global et
+        et = 1
+
         strike(tile=tile-1, pl=b)
 
         turn = turn+1
         if turn == 9:
+            roundd = roundd+1
             if check_if_won() == 1:
                 pass
             else:
                 banner_draw()
+                roundd = roundd+1
+
+                outline()
+                reset_ne()
                 global score2
                 global score1
                 score2 = score2 + 1
                 score1 = score1 + 1
-                reset_ne()
 
     else:
         pass
 
-    print(tile, turn)
+    print(tile, turn, roundd)
     check_if_won()
 
 
+def count():
+    bannermain(t1="3", t3=0.5)
+    bannermain(t1="2", t3=0.5)
+    bannermain(t1="1", t3=0.5)
+    bannermain(t1="Go !", t3=0.5)
+
+
+v = 0
+roundd = 1
 while gameOn:
 
     if start_on == True:
         start_screen()
+        bannermain(t1="Starting In", t3=1)
+        bannermain(t1="3", t3=0.7)
+        bannermain(t1="2", t3=0.7)
+        bannermain(t1="1", t3=0.7)
+        sreset()
 
-    g1 = g = ""
-    if turn % 2 == 0:
-        g = "*"
-        g1 = ""
+    clock.sleep(0.01)
+
+    g1 = g = " "
+    if ttt == 1:
+        if turn % 2 == 0:
+            g = "*"
+            g1 = " "
+            if time1 > 0:
+                time1 = time1-1
+            elif time1 <= 0:
+                bannermain(t1="Time Up !", t3=1.3)
+                bannermain(t1=player2 + " Wins !", t2="Score +1", t3=2)
+                score2 = score2+1
+                time2 = time1 = time = ti*100
+                count()
+                sreset()
+                turn = 0
+
+        else:
+            g = " "
+            g1 = "*"
+            if time2 > 0:
+                time2 = time2-1
+            elif time2 <= 0:
+                bannermain(t1="Time Up !", t3=1.3)
+                bannermain(t1=player1 + " Wins !", t2="Score +1", t3=2)
+                score1 = score1+1
+                time1 = time2 = time = ti*100
+                count()
+                sreset()
+                turn = 0
     else:
-        g = ""
-        g1 = "*"
+        if turn % 2 == 0:
+            g = "*"
+            g1 = " "
+            if time1 > 0:
+                time1 = time1-1
+            elif time1 <= 0:
+                bannermain(t1="Game Over !", t3=1.3)
+                bannermain(t1=player2 + " Wins !", t2="by " +
+                           str(score1)+":"+str(score2)+" in "+str(roundd) + " rounds", t3=6)
+                start_on = True
+
+        else:
+            g = " "
+            g1 = "*"
+            if time2 > 0:
+                time2 = time2-1
+            elif time2 <= 0:
+                bannermain(t1="Game Over !", t3=1.3)
+                bannermain(t1=player1 + " Wins !", t2="by " +
+                           str(score1)+":"+str(score2)+" in "+str(roundd) + " rounds", t3=6)
+                start_on = True
+
+    pygame.draw.rect(display_surface, color_dark,
+                     [0, 13, 400, 28])
+    text1 = font1.render("Round "+str(roundd), True, white, color_dark)
+    textRect1 = text1.get_rect()
+    textRect1.center = (200, 27)
+    display_surface.blit(text1, textRect1)
+
     text1 = font.render(g + player1 + " -", True, blue, white)
     textRect1 = text1.get_rect()
     textRect1.center = (110, 70)
@@ -641,15 +920,21 @@ while gameOn:
     textRect1.center = (100, 100)
     display_surface.blit(text1, textRect1)
 
-    text = font.render(str(f), True, black, white)
+    text = font.render("  "+str(time1)+"  ", True, black, white)
     textRect = text.get_rect()
-    textRect.center = (145, 100)
+    textRect.center = (150, 100)
     display_surface.blit(text, textRect)
 
-    if f > 0:
-        f = f-1
+    text1 = font.render("Time -", True, black, white)
+    textRect1 = text1.get_rect()
+    textRect1.center = (264, 100)
+    display_surface.blit(text1, textRect1)
 
-    # time.sleep(0.1)
+    text = font.render("  "+str(time2)+"  ", True, black, white)
+    textRect = text.get_rect()
+    textRect.center = (315, 100)
+    display_surface.blit(text, textRect)
+
     eve = None
 
     mouse = pygame.mouse.get_pos()
@@ -670,13 +955,15 @@ while gameOn:
                 start_on = True
 
             if 170 <= mouse[0] <= 170+65 and 365 <= mouse[1] <= 365 + 24:
-                f = 600
-                turn = 0
-                score1 = 0
-                arr = [None, None, None,
-                       None, None, None,
-                       None, None, None]
-                t = 0
+
+                bannermain(t1="Reseted", t3=1)
+                bannermain(t1="3", t3=0.5)
+                bannermain(t1="2", t3=0.5)
+                bannermain(t1="1", t3=0.5)
+                bannermain(t1="Go !", t3=0.5)
+                time1 = time2 = time = ti*100
+                roundd = roundd
+                sreset()
 
             if 270 <= mouse[0] <= 270+65 and 365 <= mouse[1] <= 365 + 24:
                 pygame.quit()
@@ -716,3 +1003,11 @@ while gameOn:
 
     pygame.display.flip()
     pygame.display.update()
+
+    if et == 1:
+        if v == 1:
+            clock.sleep(0.3)
+            et = 0
+            v = 0
+        else:
+            v = v+1
