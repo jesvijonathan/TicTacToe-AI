@@ -101,7 +101,10 @@ while j >= 0:
 
 
 font = pygame.font.Font('freesansbold.ttf', 17)
+font1 = pygame.font.Font('freesansbold.ttf', 18)
 smallfont = pygame.font.SysFont('Corbel', 17)
+smallfont1 = pygame.font.SysFont('Corbel', 13)
+bigfont = pygame.font.SysFont('Bauhuas 93', 60)
 
 f = 140
 
@@ -113,7 +116,298 @@ arr = [None, None, None,
 player1 = "Player 1"
 wplayer = ""
 player2 = "Player 2"
-gameOn = True
+ti = None
+copmuter = 0
+start_on = gameOn = True
+sound = True
+dif = 0
+ti = 40
+ttt = 0
+
+pygame.mixer.init()
+pygame.mixer.music.load("Surf_David_Renda.mp3")
+pygame.mixer.music.play(-1, 0.0)
+
+
+def room():
+    global start_on
+    global player2
+    global ti
+    global copmuter
+    global dif
+    global ti
+    global ttt
+
+    display_surface.fill(white)
+
+    while start_on:
+
+        pygame.draw.rect(display_surface, color_dark,
+                         [0, 33, 400, 28])
+        text1 = font1.render("Game Option", True, white, color_dark)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200, 47)
+        display_surface.blit(text1, textRect1)
+
+        text1 = font1.render("Player 1 :", True, black, white)
+        textRect1 = text1.get_rect()
+        textRect1.center = (140, 97)
+        display_surface.blit(text1, textRect1)
+
+        pygame.draw.rect(display_surface, color_light,
+                         [100, 120, 200, 28])
+
+        text1 = font1.render("Player 2 :", True, black, white)
+        textRect1 = text1.get_rect()
+        textRect1.center = (140, 177)
+        display_surface.blit(text1, textRect1)
+
+        # pygame.draw.rect(display_surface, blue, [210, 165, 33, 24])
+        user = None
+        kk = -80
+        if copmuter == 1:
+            user = "Computer"
+        else:
+            user = "User"
+
+        pygame.draw.rect(display_surface, color_dark, [195, 165, 96, 24])
+        text1 = font1.render(user, True, white, color_dark)
+        textRect1 = text1.get_rect()
+        textRect1.center = (243, 177)
+        display_surface.blit(text1, textRect1)
+
+        pygame.draw.rect(display_surface, color_light,
+                         [100, 200, 200, 28])
+
+        text1 = font1.render("Difficulty", True, black, white)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200+kk, 250)
+        display_surface.blit(text1, textRect1)
+
+        if dif == 0:
+            pygame.draw.rect(display_surface, color_light,
+                             [162+kk, 270, 80, 40])
+            text1 = font1.render("Normal", True, white, color_light)
+            textRect1 = text1.get_rect()
+            textRect1.center = (202+kk, 290)
+            display_surface.blit(text1, textRect1)
+
+        elif dif == 1:
+            pygame.draw.rect(display_surface, color_dark,
+                             [162+kk, 270, 80, 40])
+            text1 = font1.render("Medium", True, white, color_dark)
+            textRect1 = text1.get_rect()
+            textRect1.center = (202+kk, 290)
+            display_surface.blit(text1, textRect1)
+        elif dif == 2:
+            pygame.draw.rect(display_surface, black,
+                             [162+kk, 270, 80, 40])
+            text1 = font1.render("Hard", True, white, black)
+            textRect1 = text1.get_rect()
+            textRect1.center = (202+kk, 290)
+            display_surface.blit(text1, textRect1)
+
+        pygame.draw.rect(display_surface, color_dark,
+                         [140+kk, 280, 20, 20])
+        pygame.draw.rect(display_surface, color_dark,
+                         [244+kk, 280, 20, 20])
+
+        pygame.draw.rect(display_surface, color_light,
+                         [294, 340, 64, 30])
+        text1 = font1.render("Start", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (326, 354)
+        display_surface.blit(text1, textRect1)
+
+        pygame.draw.rect(display_surface, color_light,
+                         [45, 340, 64, 30])
+        text1 = font1.render("Back", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (75, 354)
+        display_surface.blit(text1, textRect1)
+
+        # pygame.draw.rect(display_surface, color_light,
+        #                 [160, 343, 33, 24])
+        pygame.draw.rect(display_surface, color_light,
+                         [242, 270, 80, 40])
+
+        if ttt == 0:
+            tt = "Stopwatch"
+        else:
+            tt = "Counter"
+
+        pygame.draw.rect(display_surface, color_dark,
+                         [230, 237, 100, 26])
+        text1 = font1.render(tt, True, white, color_dark)
+        textRect1 = text1.get_rect()
+        textRect1.center = (280, 250)
+        display_surface.blit(text1, textRect1)
+
+        text1 = font1.render(str(ti)+"s", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (280, 290)
+        display_surface.blit(text1, textRect1)
+
+        pygame.draw.rect(display_surface, color_dark,
+                         [220, 280, 20, 20])
+        pygame.draw.rect(display_surface, color_dark,
+                         [324, 280, 20, 20])
+
+        pygame.draw.line(display_surface, color_light,
+                         (202, 255), (202, 325), 3)
+
+        mouse = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+
+            if event.type == KEYDOWN:
+
+                if event.key == K_BACKSPACE:
+                    pygame.quit()
+
+            elif event.type == QUIT:
+                pygame.quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                if 195 <= mouse[0] <= 195+96 and 165 <= mouse[1] <= 165 + 24:
+                    # start_on = False [195, 165, 96, 24]
+                    copmuter = not copmuter
+
+                elif 244+kk <= mouse[0] <= 244+kk+20 and 280 <= mouse[1] <= 280 + 20:
+                    # [252, 280, 20, 20])
+                    if dif >= 0 and dif < 2:
+                        dif = dif+1
+                elif 140+kk <= mouse[0] <= 140+kk+20 and 280 <= mouse[1] <= 280 + 20:
+                    # [252, 280, 20, 20])
+                    if dif > 0 and dif <= 2:
+                        dif = dif-1
+
+                elif 220 <= mouse[0] <= 220+20 and 280 <= mouse[1] <= 280 + 20:
+                    # [252, 280, 20, 20])
+                    ti = ti-5
+                elif 324 <= mouse[0] <= 324+20 and 280 <= mouse[1] <= 280 + 20:
+                    # [252, 280, 20, 20])
+                    ti = ti+5
+
+                elif 230 <= mouse[0] <= 230+100 and 237 <= mouse[1] <= 237 + 26:
+                    ttt = not ttt
+                    pass
+                elif 156 <= mouse[0] <= 156+87 and 310 <= mouse[1] <= 310 + 35:
+                    pygame.quit()
+
+                elif 40 <= mouse[0] <= 40+14 and 370 <= mouse[1] <= 370 + 14:
+                    pass
+
+        pygame.display.update()
+
+
+def start_screen():
+
+    global start_on
+    global sound
+
+    display_surface.fill(white)
+
+    pygame.draw.rect(display_surface, black,
+                     [0, 42, 400, 70])
+
+    pygame.draw.rect(display_surface, color_light,
+                     [157, 160, 87, 35])
+
+    pygame.draw.rect(display_surface, color_light,
+                     [157, 210, 87, 35])
+
+    pygame.draw.rect(display_surface, color_light,
+                     [157, 260, 87, 35])
+
+    pygame.draw.rect(display_surface, color_light,
+                     [157, 310, 87, 35])
+
+    pygame.draw.rect(display_surface, color_light,
+                     [40, 370, 14, 14])
+    pygame.draw.rect(display_surface, color_dark,
+                     [44, 374, 6, 6])
+
+    while start_on:
+
+        text1 = bigfont.render("TicTacToe", True, white, black)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200, 77)
+        display_surface.blit(text1, textRect1)
+
+        text1 = font1.render("Start", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200, 177)
+        display_surface.blit(text1, textRect1)
+
+        text1 = font1.render("Quick", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200, 228)
+        display_surface.blit(text1, textRect1)
+
+        text1 = font1.render("Credits", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200, 277)
+        display_surface.blit(text1, textRect1)
+
+        text1 = font1.render("Exit", True, white, color_light)
+        textRect1 = text1.get_rect()
+        textRect1.center = (200, 327)
+        display_surface.blit(text1, textRect1)
+
+        text1 = smallfont1.render("Jesvi Jonathan", True, black, white)
+        textRect1 = text1.get_rect()
+        textRect1.center = (348, 390)
+        display_surface.blit(text1, textRect1)
+
+        mouse = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+
+            if event.type == KEYDOWN:
+
+                if event.key == K_BACKSPACE:
+                    pygame.quit()
+
+            elif event.type == QUIT:
+                pygame.quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                if 156 <= mouse[0] <= 156+87 and 160 <= mouse[1] <= 160 + 35:
+                    # start_on = False
+                    room()
+
+                elif 156 <= mouse[0] <= 156+87 and 210 <= mouse[1] <= 210 + 35:
+                    start_on = False
+                    reset_ne()
+                    outline()
+
+                elif 156 <= mouse[0] <= 156+87 and 260 <= mouse[1] <= 260 + 35:
+                    pass
+                elif 156 <= mouse[0] <= 156+87 and 310 <= mouse[1] <= 310 + 35:
+                    pygame.quit()
+
+                elif 40 <= mouse[0] <= 40+14 and 370 <= mouse[1] <= 370 + 14:
+
+                    if sound == True:
+                        pygame.mixer.music.set_volume(0)
+                        sound = False
+                        pygame.draw.rect(display_surface, color_light,
+                                         [40, 370, 14, 14])
+                    elif sound == False:
+                        pygame.mixer.music.set_volume(100)
+                        sound = True
+                        pygame.draw.rect(display_surface, color_light,
+                                         [40, 370, 14, 14])
+                        pygame.draw.rect(display_surface, color_dark,
+                                         [44, 374, 6, 6])
+
+                else:
+                    pass
+
+        pygame.display.update()
 
 
 def strike(tile, pl):
@@ -174,11 +468,10 @@ def checker_hover():
         pass
         t = 9
 
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if t == None:
-            pass
-        else:
-            game_logic(tile=t)
+    if t == None:
+        pass
+    else:
+        game_logic(tile=t)
 
 
 def banner():
@@ -203,7 +496,7 @@ def banner():
 def banner_draw():
     pygame.draw.rect(display_surface, color_light,
                      [103, 170, 200, 100])
-    text1 = font.render("Draw Match !", True, blue, white)
+    text1 = font.render("Match Tie !", True, blue, white)
     textRect1 = text1.get_rect()
     textRect1.center = (200, 220)
     display_surface.blit(text1, textRect1)
@@ -298,6 +591,10 @@ def game_logic(tile):
                 pass
             else:
                 banner_draw()
+                global score2
+                global score1
+                score2 = score2 + 1
+                score1 = score1 + 1
                 reset_ne()
 
     else:
@@ -308,6 +605,10 @@ def game_logic(tile):
 
 
 while gameOn:
+
+    if start_on == True:
+        start_screen()
+
     g1 = g = ""
     if turn % 2 == 0:
         g = "*"
@@ -349,6 +650,7 @@ while gameOn:
         f = f-1
 
     # time.sleep(0.1)
+    eve = None
 
     mouse = pygame.mouse.get_pos()
 
@@ -363,9 +665,9 @@ while gameOn:
             gameOn = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-
+            eve = event.type
             if 67 <= mouse[0] <= 67+65 and 365 <= mouse[1] <= 365 + 24:
-                pygame.quit()
+                start_on = True
 
             if 170 <= mouse[0] <= 170+65 and 365 <= mouse[1] <= 365 + 24:
                 f = 600
@@ -378,6 +680,8 @@ while gameOn:
 
             if 270 <= mouse[0] <= 270+65 and 365 <= mouse[1] <= 365 + 24:
                 pygame.quit()
+
+            checker_hover()
 
     if 67 <= mouse[0] <= 67+65 and 365 <= mouse[1] <= 365 + 24:
         pygame.draw.rect(display_surface, color_light,
@@ -402,8 +706,6 @@ while gameOn:
     else:
         pygame.draw.rect(display_surface, color_dark,
                          [270, 365, 65, 24])
-
-    checker_hover()
 
     bt = smallfont.render('Back', True, white)
     bt1 = smallfont.render('Reset', True, white)
