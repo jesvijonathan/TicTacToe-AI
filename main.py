@@ -1,7 +1,9 @@
+from pygame.locals import *
 import pygame
 import time as clock
 
-from pygame.locals import *
+import webbrowser as wb
+
 
 white = (255, 255, 255)
 green = (0, 255, 0)
@@ -18,7 +20,8 @@ height = 400
 
 display_surface = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Tictactoe')
-
+programIcon = pygame.image.load('tic-tac-toe-icon.png')
+pygame.display.set_icon(programIcon)
 
 pygame.init()
 
@@ -1007,12 +1010,17 @@ def Credits():
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 70 <= mouse[0] <= 70+73 and 325 <= mouse[1] <= 325 + 24:
-
                     gameOn = True
                     display_surface.fill(white)
                     start_on = True
                     dra()
                     return
+                if 170 <= mouse[0] <= 170+73 and 325 <= mouse[1] <= 325 + 24:
+                    wb.open_new_tab(
+                        'https://jesvijonathan.github.io/jesvijonathan/')
+                if 270 <= mouse[0] <= 170+73 and 325 <= mouse[1] <= 325 + 24:
+                    wb.open_new_tab(
+                        'https://jesvijonathan.github.io/jesvijonathan/')
 
         pygame.display.flip()
         pygame.display.update()
