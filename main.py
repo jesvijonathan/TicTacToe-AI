@@ -20,8 +20,11 @@ height = 400
 
 display_surface = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Tictactoe')
-programIcon = pygame.image.load('tic-tac-toe-icon.png')
-pygame.display.set_icon(programIcon)
+try:
+    programIcon = pygame.image.load('tic-tac-toe-icon.png')
+    pygame.display.set_icon(programIcon)
+except:
+    pass
 
 pygame.init()
 
@@ -129,9 +132,12 @@ target = 3
 name = ""
 dr = 0
 
-pygame.mixer.init()
-pygame.mixer.music.load("Surf_David_Renda.mp3")
-pygame.mixer.music.play(-1, 0.0)
+try:
+    pygame.mixer.init()
+    pygame.mixer.music.load("Surf_David_Renda.mp3")
+    pygame.mixer.music.play(-1, 0.0)
+except:
+    pass
 
 
 def getno():
@@ -591,6 +597,7 @@ def start_screen():
                     #start_on = True
                     target = 5
                     ti = 5
+                    ttt = 1
                     time1 = time2 = time = ti*100
                     if room() == 3:
                         dra()
@@ -1093,10 +1100,12 @@ while gameOn:
             g1 = " "
             if time1 > 0:
                 time1 = time1-1
+
             elif time1 <= 0:
+                score2 += 1
                 bannermain(t1="Game Over !", t3=1.3)
                 bannermain(t1=player2 + "  Wins !", t2="by " +
-                           str(score1)+":"+str(score2)+" in "+str(roundd) + " rounds", t3=6)
+                           str(score2)+":"+str(score1)+" in "+str(roundd) + " rounds", t3=6)
                 start_on = True
 
         else:
@@ -1105,6 +1114,7 @@ while gameOn:
             if time2 > 0:
                 time2 = time2-1
             elif time2 <= 0:
+                score1 += 1
                 bannermain(t1="Game Over !", t3=1.3)
                 bannermain(t1=player1 + "  Wins !", t2="by " +
                            str(score1)+":"+str(score2)+" in "+str(roundd) + " rounds", t3=6)
